@@ -1,0 +1,31 @@
+---
+- name: ensure base directives exist
+  tags:
+    - sshd
+  notify: restart sshd
+  loop:
+    "{{ fbsd_sshd_base_directives }}"
+  ansible.builtin.lineinfile:
+    path: "{{ fbsd_sshd_jail_prepath }}{{ fbsd_sshd_config_directory }}/{{ fbsd_sshd_base_filename }}"
+    line: "{{ item['directive_name'] }} {{ item['directive_value'] }}"
+    state: present
+
+- name: ensure security directives exist
+  tags:
+    - sshd
+  notify: restart sshd
+  loop:
+    "{{ fbsd_sshd_security_directives }}"
+  ansible.builtin.lineinfile:
+    path: "{{ fbsd_sshd_jail_prepath }}{{ fbsd_sshd_config_directory }}/{{ fbsd_sshd_security_filename }}"
+    line: "{{ item['directive_name'] }} {{ item['directive_value'] }}"
+    state: present
+
+- name: ensure sshd hooks into the config files
+  tags:
+    - sshd
+  notify: restart sshd
+  ansible.builtin.lineinfile:
+    path: "{{ fbsd_sshd_main_config_filepath }}"
+    line: Include /etc/ssh/sshd_config.d/*.conf
+    

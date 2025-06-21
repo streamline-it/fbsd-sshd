@@ -1,0 +1,9 @@
+---
+# handlers file for fbsd-sshd
+- name: restart sshd
+  tags:
+    - sshd
+  when: fbsd_sshd_jail_it == false
+  ansible.builtin.service:
+    name: "{{ fbsd_sshd_svc }}"
+    state: restarted

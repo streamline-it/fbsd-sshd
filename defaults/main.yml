@@ -1,0 +1,24 @@
+---
+# defaults file for fbsd_sshd
+
+# if true, we're configuring sshd for a jail
+fbsd_sshd_jail_it: false
+
+# The path to the jail, this will be added to the path of the config file(s)
+fbsd_sshd_jail_prepath: ""
+
+# base sshd dirctives go here
+fbsd_sshd_base_directives:
+  - directive_name:
+    directive_value:
+
+# security directives go there
+fbsd_sshd_security_directives:
+  - directive_name: KbdInteractiveAuthentication
+    directive_value: "no"
+  - directive_name: PasswordAuthentication
+    directive_value: "no"
+  - directive_name: PubkeyAuthentication
+    directive_value: "yes"
+  - directive_name: PermitRootLogin
+    directive_value: "no"

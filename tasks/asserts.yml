@@ -1,0 +1,15 @@
+- name: ensure needed variables are defined
+  ansible.builtin.assert:
+    that:
+      - fbsd_sshd_security_directives is defined
+      - fbsd_sshd_root_group is defined
+      - fbsd_sshd_svc is defined
+      - fbsd_sshd_base_filename is defined
+      - fbsd_sshd_security_filename is defined
+      - fbsd_sshd_config_directory is defined
+      - fbsd_sshd_main_config_filepath is defined
+    fail_msg: >
+      "Make sure following variables are defined
+      (fbsd_sshd_security_directives, fbsd_sshd_root_group,
+      fbsd_sshd_svc, fbsd_security_filename, 
+      fbsd_sshd_config_directory, fbsd_sshd_main_config_filepath)"

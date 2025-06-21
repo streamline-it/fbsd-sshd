@@ -1,0 +1,20 @@
+---
+# vars file for fbsd-sshd
+
+# root group for FreeBSD
+fbsd_sshd_root_group: wheel
+
+# SSHD service name
+fbsd_sshd_svc: sshd
+
+# custom config directory
+fbsd_sshd_config_directory: /etc/ssh/sshd_config.d
+
+# name of the custom base config file
+fbsd_sshd_base_filename: 10-base.conf
+
+# name of the custom security-based config file
+fbsd_sshd_security_filename: 20-hardening.conf
+
+# main sshd config filepath
+fbsd_sshd_main_config_filepath: /etc/ssh/sshd_config
