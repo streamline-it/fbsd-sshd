@@ -22,3 +22,9 @@ fbsd_sshd_security_directives:
     directive_value: "yes"
   - directive_name: PermitRootLogin
     directive_value: "no"
+
+# security directives to comment out
+fbsd_sshd_security_lines_to_disable:
+  - directive_line: "KbdInteractiveAuthentication yes"
+  - directive_line: "PasswordAuthentication yes"
+  - directive_line: "PermitRootLogin yes"

@@ -39,6 +39,16 @@ fbsd_sshd_security_directives:
   - directive_name: PermitRootLogin
     directive_value: "no"
 
+
+# disable directives in the sshd_config file
+fbsd_sshd_security_lines_to_disable:
+  - directive_line: "KbdInteractiveAuthentication yes"
+  - directive_line: "PasswordAuthentication yes"
+  - directive_line: "PermitRootLogin yes"
+
+
+
+
 ######################################################################
 #
 # vars file for fbsd-sshd

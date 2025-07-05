@@ -28,4 +28,14 @@
   ansible.builtin.lineinfile:
     path: "{{ fbsd_sshd_main_config_filepath }}"
     line: Include /etc/ssh/sshd_config.d/*.conf
-    
+
+- name: ensure certain settings are disbled in the main config
+  tags:
+    - sshd
+  notify: restart sshd
+  loop:
+    "{{ fbsd_sshd_security_lines_to_disable }}"
+  ansible.builtin.lineinfile:
+    path: "{{ fbsd_sshd_main_config_filepath }}"
+    regex: "^{{ item['directive_line'] }}"
+    line: "#{{ item['directive_line'] }}"
