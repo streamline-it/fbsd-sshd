@@ -1,6 +1,4 @@
 - name: ensure custom config directory exists
-  tags:
-    - sshd
   ansible.builtin.file:
     path: "{{ fbsd_sshd_jail_prepath }}{{ fbsd_sshd_config_directory }}"
     owner: root
@@ -9,16 +7,12 @@
     state: directory
 
 - name: check to see if base config file exists
-  tags:
-    - sshd
   register: fbsd_sshd_base_config_chk
   ansible.builtin.stat:
     path: "{{ fbsd_sshd_jail_prepath }}{{ fbsd_sshd_config_directory }}/{{ fbsd_sshd_base_filename }}"
     get_attributes: true
 
 - name: ensure base config file exists
-  tags:
-    - sshd
   when: fbsd_sshd_base_config_chk['stat']['exists'] == false
   ansible.builtin.copy:
     content: ""
@@ -28,16 +22,12 @@
     mode: "0600"
 
 - name: check to see if security config file exists
-  tags:
-    - sshd
   register: fbsd_sshd_security_config_chk
   ansible.builtin.stat:
     path: "{{ fbsd_sshd_jail_prepath }}{{ fbsd_sshd_config_directory }}/{{ fbsd_sshd_security_filename }}"
     get_attributes: true
 
 - name: ensure security file exists
-  tags:
-    - sshd
   when: fbsd_sshd_security_config_chk['stat']['exists'] == false
   ansible.builtin.copy:
     content: ""

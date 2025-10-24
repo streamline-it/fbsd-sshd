@@ -1,7 +1,5 @@
 ---
 - name: ensure base directives exist
-  tags:
-    - sshd
   notify: restart sshd
   loop:
     "{{ fbsd_sshd_base_directives }}"
@@ -11,8 +9,6 @@
     state: present
 
 - name: ensure security directives exist
-  tags:
-    - sshd
   notify: restart sshd
   loop:
     "{{ fbsd_sshd_security_directives }}"
@@ -22,16 +18,12 @@
     state: present
 
 - name: ensure sshd hooks into the config files
-  tags:
-    - sshd
   notify: restart sshd
   ansible.builtin.lineinfile:
     path: "{{ fbsd_sshd_main_config_filepath }}"
     line: Include /etc/ssh/sshd_config.d/*.conf
 
 - name: ensure certain settings are disbled in the main config
-  tags:
-    - sshd
   notify: restart sshd
   loop:
     "{{ fbsd_sshd_security_lines_to_disable }}"

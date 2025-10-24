@@ -2,16 +2,10 @@
 # tasks file for fbsd-sshd
 
 - name: call asserts tasks
-  tags:
-    - sshd
   ansible.builtin.include_tasks: asserts.yml
 
 - name: call tasks to make config directory and config file exist
-  tags:
-    - sshd
   ansible.builtin.include_tasks: create-files-and-directory.yml
 
 - name: call tasks to configure sshd
-  tags:
-    - sshd
   ansible.builtin.include_tasks: configure-sshd.yml
