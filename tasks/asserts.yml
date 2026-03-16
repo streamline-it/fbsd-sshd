@@ -1,15 +1,38 @@
+---
+- name: ensure jail it boolean variable is properly set
+  ansible.builtin.assert:
+    that: 
+      - fbsd_sshd_jail_it is defined
+      - fbsd_sshd_jail_it == true or fbsd_sshd_jail_it == false
+    fail_msg: "boolean variable not set properly or not defined"
+
+- name: check on jail variables
+  when: fbsd_sshd_jail_it == true
+  ansible.builtin.assert:
+    that:
+      - fbsd_sshd_prepath is defined
+      - fbsd_sshd_prepath is truthy
+    fail_msg:
+
 - name: ensure needed variables are defined
   ansible.builtin.assert:
     that:
       - fbsd_sshd_security_directives is defined
+      - fbsd_sshd_security_directives is truthy
       - fbsd_sshd_root_group is defined
+      - fbsd_sshd_root_group is truthy
       - fbsd_sshd_svc is defined
+      - fbsd_sshd_svc is truthy
       - fbsd_sshd_base_filename is defined
+      - fbsd_sshd_base_filename is truthy
       - fbsd_sshd_security_filename is defined
+      - fbsd_sshd_security_filename is truthy
       - fbsd_sshd_config_directory is defined
+      - fbsd_sshd_config_directory is truthy
       - fbsd_sshd_main_config_filepath is defined
-    fail_msg: >
-      "Make sure following variables are defined
-      (fbsd_sshd_security_directives, fbsd_sshd_root_group,
-      fbsd_sshd_svc, fbsd_security_filename, 
-      fbsd_sshd_config_directory, fbsd_sshd_main_config_filepath)"
+      - fbsd_sshd_main_config_filepath is truthy
+      - fbsd_sshd_security_lines_to_disable is defined
+      - fbsd_sshd_security_lines_to_disable is truthy
+    fail_msg: "Make sure variables are defined and values set"
+
+

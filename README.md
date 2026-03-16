@@ -1,16 +1,19 @@
 Role Name
 =========
 
-A brief description of the role goes here.
+This role will will secure the sshd service. By securing it will do the following:
+ - disable password authentication
+ - disable root login via sshd
+
+It will also allow you to use the "fbsd_sshd_base_directives" variable to add additional directives to configure the sshd service.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+None.
 
 Role Variables
 --------------
-
 ######################################################################
 #
 # defaults file for fbsd_sshd
@@ -46,9 +49,6 @@ fbsd_sshd_security_lines_to_disable:
   - directive_line: "PasswordAuthentication yes"
   - directive_line: "PermitRootLogin yes"
 
-
-
-
 ######################################################################
 #
 # vars file for fbsd-sshd
@@ -76,16 +76,35 @@ fbsd_sshd_main_config_filepath: /etc/ssh/sshd_config
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+None.
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+Example of non-jailed configuration
 
-    - hosts: servers
-      roles:
-         - fbsd-sshd
+
+- hosts: servers
+
+  vars:
+
+    fbsd_sshd_jail_it: false
+ 
+  roles:
+    - fbsd-sshd
+
+
+Example of jailed configuration
+
+- hosts: servers
+
+  vars:
+
+    fbsd_sshd_jail_it: true
+    fbsd_sshd_jail_prepath: /jails/apache_jail
+ 
+  roles:
+    - fbsd-sshd
 
 License
 -------
@@ -95,5 +114,4 @@ BSD
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
-
+rich ohara
