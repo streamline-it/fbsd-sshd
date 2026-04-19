@@ -1,9 +1,15 @@
 ---
 # handlers file for fbsd-sshd
-- name: restart sshd
+- name: restart sshd (host)
   tags:
     - sshd
   when: fbsd_sshd_jail_it == false
   ansible.builtin.service:
     name: "{{ fbsd_sshd_svc }}"
     state: restarted
+
+- name: restart sshd (jail)
+  when: fbsd_sshd_jail_it == true
+  register: fbsd_sshd_command_result
+  failed_when: fbsd_sshd_command_result['rc'] > 1
+  ansible.builtin.command: "jexec -lU root {{ fbsd_sshd_jail_name }} service {{ fbsd_sshd_svc }} restart"

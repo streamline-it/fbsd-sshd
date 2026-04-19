@@ -4,6 +4,9 @@
 # if true, we're configuring sshd for a jail
 fbsd_sshd_jail_it: false
 
+# jail name, used to restart the sshd service
+fbsd-sshd_jail_name: 
+
 # The path to the jail, this will be added to the path of the config file(s)
 fbsd_sshd_jail_prepath: ""
 

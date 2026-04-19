@@ -23,6 +23,9 @@ Role Variables
 # if true, we're configuring sshd for a jail
 fbsd_sshd_jail_it: false
 
+# name of the jail, used to restart the sshd service for the jail
+fbsd_sshd_jail_name: 
+
 # The path to the jail, this will be added to the path of the config file(s)
 fbsd_sshd_jail_prepath: ""
 
@@ -91,7 +94,7 @@ Example of non-jailed configuration
     fbsd_sshd_jail_it: false
  
   roles:
-    - fbsd-sshd
+    - name: fbsd-sshd
 
 
 Example of jailed configuration
@@ -102,9 +105,10 @@ Example of jailed configuration
 
     fbsd_sshd_jail_it: true
     fbsd_sshd_jail_prepath: /jails/apache_jail
+    fbsd_sshd_jail_name: apache_jail
  
   roles:
-    - fbsd-sshd
+    - name: fbsd-sshd
 
 License
 -------

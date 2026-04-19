@@ -10,9 +10,11 @@
   when: fbsd_sshd_jail_it == true
   ansible.builtin.assert:
     that:
-      - fbsd_sshd_prepath is defined
-      - fbsd_sshd_prepath is truthy
-    fail_msg:
+      - fbsd_sshd_jail_prepath is defined
+      - fbsd_sshd_jail_prepath is truthy
+      - fbsd_sshd_jail_name is defined
+      - fbsd_sshd_jail_name is truthy
+    fail_msg: "Key variables must be defined and have values"
 
 - name: ensure needed variables are defined
   ansible.builtin.assert:

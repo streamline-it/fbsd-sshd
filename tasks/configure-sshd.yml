@@ -1,6 +1,49 @@
 ---
+#
+# host config section
+#
 - name: ensure base directives exist
-  notify: restart sshd
+  when: fbsd_sshd_jail_it == false
+  notify: restart sshd (host)
+  loop:
+    "{{ fbsd_sshd_base_directives }}"
+  ansible.builtin.lineinfile:
+    path: "{{ fbsd_sshd_config_directory }}/{{ fbsd_sshd_base_filename }}"
+    line: "{{ item['directive_name'] }} {{ item['directive_value'] }}"
+    state: present
+
+- name: ensure security directives exist
+  when: fbsd_sshd_jail_it == false
+  notify: restart sshd (host)
+  loop:
+    "{{ fbsd_sshd_security_directives }}"
+  ansible.builtin.lineinfile:
+    path: "{{ fbsd_sshd_config_directory }}/{{ fbsd_sshd_security_filename }}"
+    line: "{{ item['directive_name'] }} {{ item['directive_value'] }}"
+    state: present
+
+- name: ensure sshd hooks into the config files
+  when: fbsd_sshd_jail_it == false
+  notify: restart sshd (host)
+  ansible.builtin.lineinfile:
+    path: "{{ fbsd_sshd_main_config_filepath }}"
+    line: Include /etc/ssh/sshd_config.d/*.conf
+
+- name: ensure certain settings are disbled in the main config
+  when: fbsd_sshd_jail_it == false
+  notify: restart sshd (host)
+  loop:
+    "{{ fbsd_sshd_security_lines_to_disable }}"
+  ansible.builtin.lineinfile:
+    path: "{{ fbsd_sshd_main_config_filepath }}"
+    regex: "^{{ item['directive_line'] }}"
+    line: "#{{ item['directive_line'] }}"
+#
+# jail config section
+#
+- name: ensure base directives exist
+  when: fbsd_sshd_jail_it == true
+  notify: restart sshd (jail)
   loop:
     "{{ fbsd_sshd_base_directives }}"
   ansible.builtin.lineinfile:
@@ -9,7 +52,8 @@
     state: present
 
 - name: ensure security directives exist
-  notify: restart sshd
+  when: fbsd_sshd_jail_it == true
+  notify: restart sshd (jail)
   loop:
     "{{ fbsd_sshd_security_directives }}"
   ansible.builtin.lineinfile:
@@ -18,16 +62,18 @@
     state: present
 
 - name: ensure sshd hooks into the config files
-  notify: restart sshd
+  when: fbsd_sshd_jail_it == true
+  notify: restart sshd (jail)
   ansible.builtin.lineinfile:
-    path: "{{ fbsd_sshd_main_config_filepath }}"
+    path: "{{ fbsd_sshd_jail_prepath }}/{{ fbsd_sshd_main_config_filepath }}"
     line: Include /etc/ssh/sshd_config.d/*.conf
 
 - name: ensure certain settings are disbled in the main config
-  notify: restart sshd
+  when: fbsd_sshd_jail_it == true
+  notify: restart sshd (jail)
   loop:
     "{{ fbsd_sshd_security_lines_to_disable }}"
   ansible.builtin.lineinfile:
-    path: "{{ fbsd_sshd_main_config_filepath }}"
+    path: "{{ fbsd_sshd_jail_prepath }}/{{ fbsd_sshd_main_config_filepath }}"
     regex: "^{{ item['directive_line'] }}"
     line: "#{{ item['directive_line'] }}"
